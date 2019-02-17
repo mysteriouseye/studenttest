@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.students.dao.TestDao">
+    <insert id="addNewTestName" parameterType="java.lang.String">
+        INSERT INTO testname(test_name) VALUES (#{0})
+    </insert>
+    <insert id="addNewTest" parameterType="TestTable">
+        INSERT INTO studenttestinfo(peoNum,test_id,classNum) VALUES (#{peoNum},#{test_id},#{classNum})
+    </insert>
+    <select id="getTestId" resultType="int">
+        SELECT test_id FROM testname WHERE test_name = #{0}
+    </select>
+    <select id="getTestInfo" resultType="TestName">
+        SELECT * from testname
+    </select>
+    <select id="getTestInfoOfStudents" resultType="TestTable">
+        select
+         u.userName AS userName,
+         s.*,
+         sum(Chinese+Math+English+Physic+Chemical+Biology+Politics+History+Geography) As sumFen,
+         (@rownum:=@rownum+1) AS xu_number
+        from
+         (studenttestinfo s,(SELECT @rownum:=0) r) join users u on u.peoNum = s.peoNum WHERE s.classNum = #{0} AND s.test_id = #{1} group by s.st_id;
+    </select>
+    <select id="getAllTestInfoOfStudents" resultType="TestTable">
+        select
+         u.userName AS userName,
+         s.*,
+         sum(Chinese+Math+English+Physic+Chemical+Biology+Politics+History+Geography) As sumFen,
+         (@rownum:=@rownum+1) AS xu_number
+        from
+         (studenttestinfo s,(SELECT @rownum:=0) r) join users u on u.peoNum = s.peoNum WHERE s.test_id = #{0} group by s.st_id;
+    </select>
+    <select id="getAllTestinfoClassNum" resultType="java.lang.String">
+        select distinct classNum from studenttestinfo where test_id = #{0};
+    </select>
+    <delete id="eotaDel">
+        DELETE FROM studenttestinfo where test_id=#{0};
+    </delete>
+    <delete id="eotaDel2">
+        DELETE FROM testname where test_id=#{0};
+    </delete>
+    <update id="eotaUpdate">
+        UPDATE testname SET test_name=#{0} where test_id=#{1}
+    </update>
+    <update id="updateAllFen" parameterType="TestTable">
+        UPDATE studenttestinfo
+        SET
+        Chinese = #{chinese},
+        English = #{english},
+        Math = #{math},
+        Physic = #{physic},
+        Chemical = #{chemical},
+        Biology = #{biology},
+        Politics = #{politics},
+        History = #{history},
+        Geography = #{geography}
+        WHERE peoNum = #{peoNum} AND classNum = #{classNum} AND test_id = #{test_id};
+    </update>
+</mapper>

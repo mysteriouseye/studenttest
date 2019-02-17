@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+   <mvc:annotation-driven>
+        <!-- 解决@ResponseBody 返回字符串乱码方式2 -->
+        <!--消息转换器  -->
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="utf-8" />
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login/*"/>
+            <mvc:exclude-mapping path="/img/*"/>
+            <mvc:exclude-mapping path="/css/*"/>
+            <mvc:exclude-mapping path="/fonts/*"/>
+            <mvc:exclude-mapping path="/fonts/roboto/*"/>
+            <mvc:exclude-mapping path="/icons/*"/>
+            <mvc:exclude-mapping path="/icons/material-icons/*"/>
+            <mvc:exclude-mapping path="/js/*"/>
+            <mvc:exclude-mapping path="/regist/*"/>
+            <bean class="com.students.Interceptor.StudentManInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <context:component-scan base-package="com.students"/>
+    <!-- 配置视图解析器  ViewResolver-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 访问WebRoot下静态资源 -->
+    <mvc:default-servlet-handler/>
+</beans>

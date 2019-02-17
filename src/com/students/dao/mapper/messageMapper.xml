@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.students.dao.MessageDao">
+    <insert id="addNewMessage" parameterType="MessageTable">
+        INSERT INTO messagetable(uid,title,mes) VALUES (#{uid},#{title},#{mes})
+    </insert>
+    <select id="adminselectAllMessage" resultType="MessageTable">
+        select m.*,u.r_userName,u.userName,u.headIco from messagetable m join users u on u.uid = m.uid
+    </select>
+    <select id="findUserMessage" resultType="MessageTable">
+        select * from messagetable WHERE uid = #{0};
+    </select>
+    <update id="passMsg" parameterType="int">
+        UPDATE messagetable SET k_status = 1 WHERE m_id = #{0}
+    </update>
+    <delete id="deleteMsg" parameterType="int">
+        DELETE FROM messagetable WHERE m_id = #{0}
+    </delete>
+</mapper>

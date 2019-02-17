@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.students.dao.CourseDao">
+    <select id="findAllCourseByClassNumWithYear" resultType="CourseTable">
+        SELECT cname,c_time,c_time_more,c_what,c_location,c_teacher FROM coursetable c join courseinfo c1 on c.cou_id = c1.cou_id WHERE c_year = #{0} AND classNum = #{1}
+    </select>
+    <select id="findAllCourseYear" resultType="java.lang.Integer">
+        SELECT DISTINCT c_year from coursetable;
+    </select>
+    <select id="findAllCourseClassNum" resultType="string">
+        SELECT DISTINCT classNum from coursetable;
+    </select>
+    <select id="findAllCourse" resultType="com.students.entity.CourseTable">
+        SELECT cname,classNum,c_time,c_time_more,c_what,c_location,c_teacher FROM coursetable c join courseinfo c1 on c.cou_id = c1.cou_id;
+    </select>
+    <select id="checkCourseisKown" parameterType="CourseTable" resultType="CourseTable">
+        SELECT * FROM coursetable
+        WHERE
+          classNum = #{classNum}
+          AND c_year = #{c_year}
+          AND c_time = #{c_time}
+          AND c_what = #{c_what}
+    </select>
+    <insert id="InsertCourse" parameterType="CourseTable">
+        INSERT INTO coursetable(cou_id,classNum,c_year,c_time,c_time_more,c_what,c_location,c_teacher,peoNum) VALUES (#{cou_id},#{classNum},#{c_year},#{c_time},#{c_time_more},#{c_what},#{c_location},#{c_teacher},#{peoNum})
+    </insert>
+    <update id="updateCourse" parameterType="CourseTable">
+        UPDATE coursetable
+        SET
+          cou_id = #{cou_id},
+          classNum = #{classNum},
+          c_year = #{c_year},
+          c_time = #{c_time},
+          c_time_more = #{c_time_more},
+          c_what = #{c_what},
+          c_location = #{c_location},
+          c_teacher = #{c_teacher},
+          peoNum = #{peoNum}
+        Where t_id = #{t_id}
+    </update>
+    <delete id="deleteCourse" parameterType="string">
+        DELETE FROM coursetable WHERE classNum = #{0}
+    </delete>
+</mapper>

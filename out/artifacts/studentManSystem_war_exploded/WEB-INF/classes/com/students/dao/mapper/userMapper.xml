@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.students.dao.UserDao">
+    <select id="findUserInfo" resultType="User">
+        SELECT * FROM users WHERE r_userName = #{0} OR peoNum = #{0} OR email = #{0}
+    </select>
+    <select id="findRUserName" resultType="int">
+        SELECT uid FROM users WHERE r_username = #{0}
+    </select>
+    <select id="AdminfindAllUserinfo" resultType="User">
+        SELECT * FROM users where identity = "学生" OR identity = "教职工"
+    </select>
+    <select id="loadClassInfo" resultType="com.students.entity.User">
+        SELECT r_userName,userName,age,sex,classNum,identity,peoNum,email,phoneNum,signed,headIco FROM users WHERE classNum = #{0} AND identity='学生'
+    </select>
+    <select id="selectClassTeacherInfo" resultType="User">
+        select distinct cname,r_userName,age,userName,email,phoneNum,sex,u.classNum,headIco,signed from users u join coursetable c on c.peoNum = u.peoNum join courseinfo c1 on  c1.cou_id = c.cou_id join coursetable on c.classNum = #{0};
+    </select>
+    <select id="getAllClassNum" resultType="java.lang.String">
+        select distinct classNum from users WHERE identity = '学生'
+    </select>
+    <select id="getAllClassNumPeoNumNoDis" resultType="User">
+        select classNum,peoNum from users WHERE identity = '学生'
+    </select>
+    <select id="getClassNumPeoNum" resultType="User">
+        SELECT classNum,peoNum from users WHERE classNum = #{0}
+    </select>
+    <select id="findUserByUId" resultType="User">
+        SELECT identity from users WHERE uid = #{0}
+    </select>
+    <select id="checkUserIsKnown" parameterType="User" resultType="User">
+          SELECT * FROM users WHERE classNum = #{classNum} AND peoNum = #{peoNum};
+    </select>
+    <update id="updateKnownUser" parameterType="User">
+            UPDATE users
+            SET
+            userName = #{userName},
+            age = #{age},
+            sex = #{sex},
+            classNum = #{classNum},
+            identity = #{identity},
+            peoNum = #{peoNum},
+            email = #{email},
+            phoneNum = #{phoneNum}
+            where
+            peoNum = #{peoNum};
+    </update>
+    <insert id="insertUserinfo" parameterType="User">
+            INSERT INTO users(userName,age,sex,classNum,identity,peoNum,email,phoneNum) VALUES (#{userName},#{age},#{sex},#{classNum},#{identity},#{peoNum},#{email},#{phoneNum});
+    </insert>
+    <update id="updateActive" parameterType="User">
+        <foreach collection="list" item="item" index="index" separator=";">
+              UPDATE users SET r_userName = #{item.r_userName},password = #{item.passWord},u_status = #{item.u_status},retime = #{item.retime} WHERE peoNum = #{item.peoNum}
+        </foreach>
+    </update>
+    <update id="updateForget" parameterType="User">
+        UPDATE users set password = #{passWord} WHERE email = #{email}
+    </update>
+    <update id="IndexUpdateUserinfo" parameterType="User">
+        UPDATE users
+        <set>
+            <if test="r_userName != '' and r_userName != null">
+                r_userName = #{r_userName},
+            </if>
+            <if test="email != '' and email != null">
+                email = #{email},
+            </if>
+            <if test="signed != '' and signed != null">
+                email = #{email},signed = #{signed}
+            </if>
+        </set>
+        WHERE uid = #{uid}
+    </update>
+    <insert id="adminInsertInfo" parameterType="User">
+        INSERT INTO users(userName,age,sex,classNum,identity,peoNum,email,phoneNum) VALUES (#{userName},#{age},#{sex},#{classNum},#{identity},#{peoNum},#{email},#{phoneNum})
+    </insert>
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM users WHERE uid = #{0}
+    </delete>
+    <update id="updateUserInfo" parameterType="User">
+        UPDATE users
+        <set>
+            <if test="r_userName != '' and r_userName != null">
+                r_username = #{r_userName},
+            </if>
+            <if test="userName != '' and userName != null">
+                userName = #{userName},
+            </if>
+            <if test="passWord != '' and passWord != null">
+                password = #{passWord},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+                sex = #{sex},
+            <if test="classNum != '' and classNum != null">
+                classNum = #{classNum},
+            </if>
+            <if test="identity != '' and identity != null">
+                identity = #{identity},
+            </if>
+            <if test="peoNum != '' and peoNum != null">
+                peoNum = #{peoNum},
+            </if>
+            <if test="email != '' and email != null">
+                email = #{email},
+            </if>
+            <if test="phoneNum != '' and phoneNum != null">
+                phoneNum = #{phoneNum}
+            </if>
+        </set>
+        where uid = #{uid}
+    </update>
+    <select id="checkadmininsert" parameterType="User" resultType="User">
+        SELECT * FROM users WHERE r_userName = #{r_userName} OR peoNum = #{peoNum} OR email = #{email}
+    </select>
+    <select id="indexcheckUser" parameterType="User" resultType="User">
+        SELECT * FROM users WHERE r_userName = #{r_userName} AND email = #{email}
+    </select>
+</mapper>

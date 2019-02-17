@@ -1,0 +1,86 @@
+.upHead{
+    height: 139px;
+    width: 139px;
+    border:1px solid lightgray;
+    border-radius: 50%;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-top: 13px;
+}
+.upHead input{
+    position:absolute;
+    right: 0px;
+    top: 0px;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px;
+}
+.footer{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+.footer{
+    position:relative;
+    width:100%;
+    color:#eee;
+    text-align: center;
+    font-size: 16px;
+    height: 50px;
+}
+.footer span{
+    line-height: 50px;
+}
+.container {
+    position: relative;
+    margin: 0 auto;
+    margin-top: 60px;
+    height: auto !important;
+    height: 100%;
+    min-height: 100%;
+}
+.spinner {
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    margin: 0 auto;
+    top:50%;
+    left:0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+}
+
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    -webkit-animation: bounce 2.0s infinite ease-in-out;
+    animation: bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+@-webkit-keyframes bounce {
+    0%, 100% { -webkit-transform: scale(0.0) }
+    50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+    } 50% {
+          transform: scale(1.0);
+          -webkit-transform: scale(1.0);
+      }
+}

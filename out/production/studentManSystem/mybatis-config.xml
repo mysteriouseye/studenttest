@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.students.entity"/>
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperdialect" value="mysql"/>
+            <!--会将RowBounds第一个参数offset作为pageNo使用-->
+            <property name="offsetAsPageNum" value="true"/>
+            <!--进行分页的时候使用count语法查询总记录数 select count(1) from xx-->
+            <property name="RowBoundsWithCount" value="true"/>
+            <!--pagesize为0的时候查询所有记录数，等于不分页-->
+            <property name="pageSizeZero" value="true"/>
+            <!--参数合理化 true:pageNo > totalPage 就用totalPage  pageNo+1 > totalPage
+                        pageNo < 1,就用1 pageNo < 1 ? 1:pageNo-->
+            <property name="reasonable" value="true"/>
+            <property name="returnPageInfo" value="true"/>
+        </plugin>
+
+    </plugins>
+</configuration>
